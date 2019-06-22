@@ -12,6 +12,7 @@ class Counter(nn.Module):
     [1]: Yan Zhang, Jonathon Hare, Adam Prügel-Bennett: Learning to Count Objects in Natural Images for Visual Question Answering.
     https://openreview.net/forum?id=B12Js_yRb
     """
+
     def __init__(self, objects, already_sigmoided=False):
         super().__init__()
         self.objects = objects
@@ -135,7 +136,7 @@ class Counter(nn.Module):
         area = inter[:, 0, :, :] * inter[:, 1, :, :]
         return area
 
- 
+
 class PiecewiseLin(nn.Module):
     def __init__(self, n):
         super().__init__()

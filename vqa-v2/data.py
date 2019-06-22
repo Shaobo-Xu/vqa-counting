@@ -3,16 +3,12 @@ import os
 import os.path
 import re
 
-from PIL import Image
+import config
 import h5py
 import torch
 import torch.utils.data as data
-import torchvision.transforms as transforms
-import numpy as np
-
-import config
 import utils
-
+from PIL import Image
 
 preloaded_vocab = None
 
@@ -45,6 +41,7 @@ def collate_fn(batch):
 
 class VQA(data.Dataset):
     """ VQA dataset, open-ended """
+
     def __init__(self, questions_path, answers_path, image_features_path, answerable_only=False, dummy_answers=False):
         super(VQA, self).__init__()
         with open(questions_path, 'r') as fd:
@@ -75,7 +72,7 @@ class VQA(data.Dataset):
         self.coco_id_to_index = self._create_coco_id_to_index()
         self.coco_ids = [q['image_id'] for q in questions_json['questions']]
 
-        self.dummy_answers= dummy_answers
+        self.dummy_answers = dummy_answers
 
         # only use questions that have at least one answer?
         self.answerable_only = answerable_only
@@ -199,6 +196,7 @@ def prepare_questions(questions_json):
 def prepare_answers(answers_json):
     """ Normalize answers from a given answer json in the usual VQA format. """
     answers = [[a['answer'] for a in ans_dict['answers']] for ans_dict in answers_json['annotations']]
+
     # The only normalization that is applied to both machine generated answers as well as
     # ground truth answers is replacing most punctuation with space (see [0] and [1]).
     # Since potential machine generated answers are just taken from most common answers, applying the other
@@ -224,6 +222,7 @@ def prepare_answers(answers_json):
 
 class CocoImages(data.Dataset):
     """ Dataset for MSCOCO images located in a folder on the filesystem """
+
     def __init__(self, path, transform=None):
         super(CocoImages, self).__init__()
         self.path = path

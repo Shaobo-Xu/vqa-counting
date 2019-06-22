@@ -1,22 +1,17 @@
-import sys
-import os.path
 import argparse
-import math
 import json
-
-import torch
-import torch.nn as nn
-import torch.nn.functional as F
-import torch.optim as optim
-import torch.optim.lr_scheduler as lr_scheduler
-from torch.autograd import Variable
-import torch.backends.cudnn as cudnn
-from tqdm import tqdm
+import os.path
 
 import config
 import data
 import model
+import torch
+import torch.backends.cudnn as cudnn
+import torch.nn.functional as F
+import torch.optim as optim
+import torch.optim.lr_scheduler as lr_scheduler
 import utils
+from tqdm import tqdm
 
 
 def run(net, loader, optimizer, scheduler, tracker, train=False, has_answers=True, prefix='', epoch=0):
@@ -41,11 +36,11 @@ def run(net, loader, optimizer, scheduler, tracker, train=False, has_answers=Tru
             'volatile': not train,
             'requires_grad': False,
         }
-        v = Variable(v.cuda(async=True), **var_params)
-        q = Variable(q.cuda(async=True), **var_params)
-        a = Variable(a.cuda(async=True), **var_params)
-        b = Variable(b.cuda(async=True), **var_params)
-        q_len = Variable(q_len.cuda(async=True), **var_params)
+        v = Variable(v.cuda(async = True), ** var_params)
+        q = Variable(q.cuda(async = True), ** var_params)
+        a = Variable(a.cuda(async = True), ** var_params)
+        b = Variable(b.cuda(async = True), ** var_params)
+        q_len = Variable(q_len.cuda(async = True), ** var_params)
 
         out = net(v, b, q, q_len)
         if has_answers:
@@ -118,7 +113,7 @@ def main():
 
     net = model.Net(val_loader.dataset.num_tokens).cuda()
     optimizer = optim.Adam([p for p in net.parameters() if p.requires_grad], lr=config.initial_lr)
-    scheduler = lr_scheduler.ExponentialLR(optimizer, 0.5**(1 / config.lr_halflife))
+    scheduler = lr_scheduler.ExponentialLR(optimizer, 0.5 ** (1 / config.lr_halflife))
     if args.resume:
         net.load_state_dict(logs['weights'])
 
@@ -128,7 +123,8 @@ def main():
     for i in range(config.epochs):
         if not args.eval_only:
             run(net, train_loader, optimizer, scheduler, tracker, train=True, prefix='train', epoch=i)
-        r = run(net, val_loader, optimizer, scheduler, tracker, train=False, prefix='val', epoch=i, has_answers=not args.test)
+        r = run(net, val_loader, optimizer, scheduler, tracker, train=False, prefix='val', epoch=i,
+                has_answers=not args.test)
 
         if not args.test:
             results = {
@@ -147,7 +143,7 @@ def main():
             torch.save(results, target_name)
         else:
             # in test mode, save a results file in the format accepted by the submission server
-            answer_index_to_string = {a:  s for s, a in val_loader.dataset.answer_to_index.items()}
+            answer_index_to_string = {a: s for s, a in val_loader.dataset.answer_to_index.items()}
             results = []
             for answer, index in zip(r[0], r[2]):
                 answer = answer_index_to_string[answer.item()]

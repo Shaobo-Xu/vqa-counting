@@ -1,20 +1,17 @@
-import sys
 import argparse
 import base64
-import os
 import csv
 import itertools
+import os
+import sys
 
 csv.field_size_limit(sys.maxsize)
 
 import h5py
-import torch.utils.data
 import numpy as np
 from tqdm import tqdm
 
 import config
-import data
-import utils
 
 
 def main():
@@ -22,7 +19,7 @@ def main():
     parser.add_argument('--test', action='store_true')
     args = parser.parse_args()
 
-    FIELDNAMES = ['image_id', 'image_w','image_h','num_boxes', 'boxes', 'features']
+    FIELDNAMES = ['image_id', 'image_w', 'image_h', 'num_boxes', 'boxes', 'features']
 
     features_shape = (
         82783 + 40504 if not args.test else 81434,  # number of images in trainval or in test

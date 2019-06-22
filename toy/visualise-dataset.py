@@ -1,14 +1,13 @@
-import sys
 import random
+import sys
 
 import data
-
-import torch
-import matplotlib.pyplot as plt
 import matplotlib.patches as patches
+import matplotlib.pyplot as plt
+import torch
+
 plt.rc('text', usetex=True)
 plt.rc('font', family='serif', serif='Times')
-
 
 q = float(sys.argv[1])
 

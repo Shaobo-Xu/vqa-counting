@@ -1,15 +1,15 @@
 import sys
 
-import torch
-import numpy as np
-import matplotlib as mpl
-import matplotlib.pyplot as plt
-import matplotlib.colors as colors
-import matplotlib.cm as cmx
 import colorcet as cc
+import matplotlib as mpl
+import matplotlib.cm as cmx
+import matplotlib.colors as colors
+import matplotlib.pyplot as plt
+import numpy as np
+import torch
+
 mpl.rc('text', usetex=True)
 plt.rc('font', family='serif', serif='Times')
-
 
 try:
     only_1_and_2 = sys.argv[2] != 'full'
@@ -24,7 +24,7 @@ target_var = sys.argv[1].split('/')[-1].split('-')[0]
 if 'weights' in logs:
     single = True
     lookup_plins = range(8)
-    plins = [[[logs['weights']['module.counter.f.{}.weight'.format(i)].cpu()]*200] for i in lookup_plins]
+    plins = [[[logs['weights']['module.counter.f.{}.weight'.format(i)].cpu()] * 200] for i in lookup_plins]
     only_1_and_2 = False
     configs = [0]
     other_configs = [0]
@@ -35,7 +35,7 @@ if 'weights' in logs:
         eps = 0.0001
         plins2, configs2 = zip(*[
             (p, c) for (p, c) in zip(plins2, configs2) \
-#            if -eps < c - 0.5 < eps or -eps < c - 0.75 < eps
+            #            if -eps < c - 0.5 < eps or -eps < c - 0.75 < eps
             if 0.35 - eps < c < 0.45 + eps or 0.65 - eps < c < 0.75 + eps or c > 0.9 - eps
         ])
         plins2 = list(zip(*plins2))
@@ -52,7 +52,6 @@ else:
     plins = list(zip(*plins))
 
 cm = cc.m_rainbow
-
 
 axes = []
 if not only_1_and_2:
@@ -83,8 +82,9 @@ for plin_number, plin in enumerate(plins):
         ax.yaxis.set_ticks(np.linspace(0, 1, 5, endpoint=True))
         ax.xaxis.set_ticks(np.linspace(0, 1, 5, endpoint=True))
         ax.xaxis.set_major_formatter(mpl.ticker.FormatStrFormatter(r'${%g}$'))
-        x = np.linspace(0, 1, 16+1, endpoint=True)
-        plt.plot(x, p.numpy(), '-', markersize=3, color=col, alpha=0.35 if not single or i > 0 else 1, linewidth=1 if not single or i > 0 else 2)
+        x = np.linspace(0, 1, 16 + 1, endpoint=True)
+        plt.plot(x, p.numpy(), '-', markersize=3, color=col, alpha=0.35 if not single or i > 0 else 1,
+                 linewidth=1 if not single or i > 0 else 2)
     if plin_number % 4 != 0:
         plt.tick_params(axis='y', which='both', labelleft='off')
     else:
@@ -98,7 +98,8 @@ for plin_number, plin in enumerate(plins):
 
 color_label = '$l$' if target_var == 'coord' else '$q$'
 plt.tight_layout()
-fig.subplots_adjust(right=0.91 - only_1_and_2 * 0.1 + 0.075 * single, left=0.125, hspace=0.18 if only_1_and_2 else 0.5, wspace=0.1 if only_1_and_2 else 0.08, bottom=0.18 if only_1_and_2 else 0.1)
+fig.subplots_adjust(right=0.91 - only_1_and_2 * 0.1 + 0.075 * single, left=0.125, hspace=0.18 if only_1_and_2 else 0.5,
+                    wspace=0.1 if only_1_and_2 else 0.08, bottom=0.18 if only_1_and_2 else 0.1)
 
 if not single:
     cbar_ax = fig.add_axes([0.93 - only_1_and_2 * 0.1, 0.2 if only_1_and_2 else 0.15, 0.03, 0.6])

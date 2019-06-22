@@ -1,21 +1,18 @@
-import sys
 import os
+import sys
 
-import torch
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
+import torch
 from cycler import cycler
-
 
 plt.rc('text', usetex=True)
 plt.rc('font', family='serif', serif='Times')
-
 
 name_lookup = {
     'coord': 'l',
     'noise': 'q',
 }
-
 
 base = sys.argv[1]
 

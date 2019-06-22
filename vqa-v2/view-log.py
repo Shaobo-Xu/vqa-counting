@@ -1,6 +1,9 @@
 import sys
+
+import matplotlib;
 import torch
-import matplotlib; matplotlib.use('agg')
+
+matplotlib.use('agg')
 import matplotlib.pyplot as plt
 
 

@@ -1,12 +1,14 @@
+import random
+
 import torch
 import torch.utils.data as data
-import random
 
 
 class ToyTask(data.Dataset):
     """
     This toy task is intended to test the robustness of the approach, not so much to be "fair" to other baselines.
     """
+
     def __init__(self, max_objects, coord, noise):
         super().__init__()
         self.max_objects = max_objects
@@ -65,4 +67,4 @@ class ToyTask(data.Dataset):
 
     def __len__(self):
         # "infinite" size dataset, so just return a big number
-        return 2**32
+        return 2 ** 32

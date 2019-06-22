@@ -1,14 +1,12 @@
 import json
-import sys
 import os.path
+import sys
 from collections import defaultdict
 
+import config
 import numpy as np
 import torch
-
 import utils
-import config
-
 
 q_path = utils.path_for(val=True, question=True)
 with open(q_path, 'r') as fd:
@@ -34,7 +32,8 @@ statistics = defaultdict(list)
 for path in sys.argv[1:]:
     log = torch.load(path)
     ans = log['eval']
-    d = [(acc, ans) for (acc, ans, _) in sorted(zip(ans['accuracies'], ans['answers'], ans['idx']), key=lambda x: x[-1])]
+    d = [(acc, ans) for (acc, ans, _) in
+         sorted(zip(ans['accuracies'], ans['answers'], ans['idx']), key=lambda x: x[-1])]
     accs = map(lambda x: x[0], d)
     id_to_cat = dict(zip(question_ids, categories))
     id_to_acc = dict(zip(question_ids, accs))

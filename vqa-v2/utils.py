@@ -1,9 +1,4 @@
 import os
-import json
-
-import torch
-import torch.nn as nn
-import torchvision.transforms as transforms
 
 import config
 
@@ -64,6 +59,7 @@ def path_for(train=False, val=False, test=False, question=False, answer=False):
 
 class Tracker:
     """ Keep track of results over time, while having access to monitors to display information about them. """
+
     def __init__(self):
         self.data = {}
 
@@ -79,9 +75,9 @@ class Tracker:
         # turn list storages into regular lists
         return {k: list(map(list, v)) for k, v in self.data.items()}
 
-
     class ListStorage:
         """ Storage of data points that updates the given monitors """
+
         def __init__(self, monitors=[]):
             self.data = []
             self.monitors = monitors

@@ -1,13 +1,11 @@
 import sys
 
+import data
+import model
 import numpy as np
 import torch
 import torch.nn as nn
-from torch.autograd import Variable
 from tqdm import tqdm
-
-import data
-import model
 
 
 def extract_plins(net):
@@ -40,9 +38,9 @@ def run(nets, loader, iterations, train):
         if i >= iterations:
             break
 
-        a = Variable(a.cuda(async=True), requires_grad=False)
-        b = Variable(b.cuda(async=True).transpose(1, 2).contiguous(), requires_grad=False)
-        c = Variable(c.cuda(async=True), requires_grad=False)
+        a = Variable(a.cuda(async = True), requires_grad = False)
+        b = Variable(b.cuda(async = True).transpose(1, 2).contiguous(), requires_grad = False)
+        c = Variable(c.cuda(async = True), requires_grad = False)
 
         pred_cs = [net(a, b) for net in nets]
         losses = [loss_function(pred_c, c) for pred_c in pred_cs]
@@ -92,7 +90,6 @@ param_ranges = {
     'coord': torch.linspace(0, 1, resolution),
     'noise': torch.linspace(0, 1, resolution),
 }
-
 
 for name, ran in tqdm(param_ranges.items(), ncols=0, desc='all', position=0):
     logs = []
